@@ -1,0 +1,43 @@
+# Docker Deployment
+
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: jobapplier-db
+    environment:
+      MYSQL_DATABASE: jobapplier
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_USER: jobuser
+      MYSQL_PASSWORD: jobpassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    networks:
+      - jobapplier-network
+
+  app:
+    build: .
+    container_name: jobapplier-app
+    depends_on:
+      - mysql
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/jobapplier?useSSL=false&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: jobuser
+      SPRING_DATASOURCE_PASSWORD: jobpassword
+    networks:
+      - jobapplier-network
+    volumes:
+      - ./src/main/resources/resume:/app/resume
+
+volumes:
+  mysql_data:
+
+networks:
+  jobapplier-network:
+    driver: bridge

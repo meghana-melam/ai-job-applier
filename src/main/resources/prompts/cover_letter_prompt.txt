@@ -1,0 +1,26 @@
+You are a professional career consultant writing a compelling cover letter for a job application.
+
+Candidate Information:
+- Name: {candidate_name}
+- Skills: {resume_skills}
+- Experience: {resume_experience} years
+- Professional Summary: {resume_summary}
+
+Job Details:
+- Position: {job_title}
+- Company: {company}
+- Job Description: {job_description}
+- Required Skills: {required_skills}
+
+Please write a professional, concise, and compelling cover letter (200-250 words) that:
+
+1. Opens with enthusiasm for the specific role and company
+2. Highlights 2-3 most relevant skills or experiences that match the job requirements
+3. Demonstrates understanding of the company/role
+4. Shows genuine interest and cultural fit
+5. Closes with a call to action
+
+Keep the tone professional yet personable. Make it specific to this job (avoid generic statements).
+Focus on value the candidate can bring to the role.
+
+Write the cover letter now:

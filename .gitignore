@@ -1,0 +1,40 @@
+# Ignore build outputs
+target/
+*.class
+*.jar
+*.war
+*.ear
+
+# Ignore IDE files
+.idea/
+*.iml
+.vscode/
+.DS_Store
+
+# Ignore logs
+*.log
+logs/
+
+# Ignore sensitive configuration - KEEP TEMPLATE ONLY
+src/main/resources/application.properties
+application-*.properties
+
+# Ignore resume files (keep only template)
+src/main/resources/resume/*.pdf
+
+# Ignore environment variables
+.env
+.env.local
+
+# Ignore local database data
+database/data/
+
+# Ignore temporary files
+*.tmp
+*.bak
+*.swp
+*~
+
+# Ignore OS files
+Thumbs.db
+.DS_Store

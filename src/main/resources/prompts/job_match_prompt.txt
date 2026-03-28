@@ -1,0 +1,22 @@
+You are an expert HR recruiter evaluating the match between a job opening and a candidate's resume.
+
+Job Details:
+- Title: {job_title}
+- Company: {company}
+- Description: {job_description}
+- Required Skills: {required_skills}
+
+Candidate Details:
+- Skills: {resume_skills}
+- Experience: {resume_experience} years
+- Summary: {resume_summary}
+
+Please evaluate how well this candidate matches this job opening on a scale of 0-100.
+
+Consider:
+1. Skill alignment (technical skills match)
+2. Experience level appropriateness
+3. Background relevance to the role
+4. Cultural and domain fit indicators
+
+Provide ONLY a numerical score between 0-100 as your response.

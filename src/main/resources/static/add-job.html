@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual Job Entry - AI Job Applier</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .required {
+            color: #e74c3c;
+        }
+        
+        input[type="text"],
+        input[type="url"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-submit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-clear {
+            background: #f5f5f5;
+            color: #333;
+        }
+        
+        .btn-clear:hover {
+            background: #e0e0e0;
+        }
+        
+        .message {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .hint {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .example {
+            background: #f0f8ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .example h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .example code {
+            background: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            display: block;
+            font-size: 12px;
+            overflow-x: auto;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📋 Manual Job Entry</h1>
+        <p class="subtitle">Add jobs from LinkedIn or Naukri by copying and pasting the details below</p>
+        
+        <div id="message" class="message"></div>
+        
+        <form id="jobForm">
+            <div class="form-group">
+                <label>Job Title <span class="required">*</span></label>
+                <input type="text" id="title" name="title" placeholder="e.g., Senior Java Developer" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Company <span class="required">*</span></label>
+                <input type="text" id="company" name="company" placeholder="e.g., Tech Corp India" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Location</label>
+                <input type="text" id="location" name="location" placeholder="e.g., Bangalore, India">
+            </div>
+            
+            <div class="form-group">
+                <label>Job URL</label>
+                <input type="url" id="jobUrl" name="jobUrl" placeholder="https://www.linkedin.com/jobs/view/...">
+                <div class="hint">Paste the full job posting URL</div>
+            </div>
+            
+            <div class="form-group">
+                <label>Job Description</label>
+                <textarea id="description" name="description" placeholder="Paste the full job description here...&#10;&#10;The AI will automatically extract skills and requirements from this."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>Required Skills (comma-separated)</label>
+                <input type="text" id="skills" name="skills" placeholder="Java, Spring Boot, MySQL, Docker, Kubernetes">
+                <div class="hint">Separate skills with commas (optional if description is provided)</div>
+            </div>
+            
+            <div class="form-group">
+                <label>Experience Level</label>
+                <input type="text" id="experienceLevel" name="experienceLevel" placeholder="e.g., 3-5 years, Mid-Level">
+            </div>
+            
+            <div class="form-group">
+                <label>Source Platform</label>
+                <select id="sourcePlatform" name="sourcePlatform">
+                    <option value="LINKEDIN">LinkedIn</option>
+                    <option value="NAUKRI">Naukri</option>
+                    <option value="MANUAL">Other</option>
+                </select>
+            </div>
+            
+            <div class="form-group checkbox-group">
+                <input type="checkbox" id="isEasyApply" name="isEasyApply">
+                <label for="isEasyApply" style="margin-bottom: 0; font-weight: normal;">Easy Apply Available</label>
+            </div>
+            
+            <div class="button-group">
+                <button type="submit" class="btn-submit">Add Job</button>
+                <button type="button" class="btn-clear" onclick="clearForm()">Clear Form</button>
+            </div>
+        </form>
+        
+        <div class="stats" id="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="totalJobs">0</div>
+                <div class="stat-label">Total Jobs</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="matchedJobs">0</div>
+                <div class="stat-label">Matched</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="appliedJobs">0</div>
+                <div class="stat-label">Applied</div>
+            </div>
+        </div>
+        
+        <div class="example">
+            <h3>💡 Quick Guide</h3>
+            <ol style="margin-left: 20px; color: #666;">
+                <li>Open LinkedIn or Naukri job posting</li>
+                <li>Copy the job title and company name</li>
+                <li>Copy the full job description</li>
+                <li>Paste everything into this form</li>
+                <li>Click "Add Job" - the AI will extract skills automatically!</li>
+            </ol>
+        </div>
+    </div>
+    
+    <script>
+        // Load stats on page load
+        loadStats();
+        
+        // Handle form submission
+        document.getElementById('jobForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                title: document.getElementById('title').value,
+                company: document.getElementById('company').value,
+                location: document.getElementById('location').value || null,
+                jobUrl: document.getElementById('jobUrl').value || null,
+                description: document.getElementById('description').value || null,
+                skills: document.getElementById('skills').value ? 
+                    document.getElementById('skills').value.split(',').map(s => s.trim()) : null,
+                experienceLevel: document.getElementById('experienceLevel').value || null,
+                sourcePlatform: document.getElementById('sourcePlatform').value,
+                isEasyApply: document.getElementById('isEasyApply').checked
+            };
+            
+            try {
+                const response = await fetch('/api/jobs/manual', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showMessage('✅ Job added successfully! ID: ' + data.jobId, 'success');
+                    clearForm();
+                    loadStats();
+                } else {
+                    showMessage('❌ Error: ' + (data.error || 'Failed to add job'), 'error');
+                }
+            } catch (error) {
+                showMessage('❌ Network error: ' + error.message, 'error');
+            }
+        });
+        
+        function clearForm() {
+            document.getElementById('jobForm').reset();
+            document.getElementById('message').style.display = 'none';
+        }
+        
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = text;
+            messageDiv.className = 'message ' + type;
+            messageDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 5000);
+        }
+        
+        async function loadStats() {
+            try {
+                const response = await fetch('/api/jobs/stats?days=30');
+                const stats = await response.json();
+                
+                document.getElementById('totalJobs').textContent = stats.total || 0;
+                document.getElementById('matchedJobs').textContent = stats.matched || 0;
+                document.getElementById('appliedJobs').textContent = stats.applied || 0;
+            } catch (error) {
+                console.error('Failed to load stats:', error);
+            }
+        }
+    </script>
+</body>
+</html>
